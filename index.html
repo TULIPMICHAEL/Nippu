@@ -7,94 +7,123 @@
 <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
-  /* header height variable for scroll-padding */
-  :root { --header-height: 70px; }
-  html { scroll-padding-top: var(--header-height); }
+/* Header height variable */
+:root { --header-height: 70px; }
+html { scroll-padding-top: var(--header-height); }
 
-  /* Global */
-  html, body {margin:0; padding:0; font-family: Arial, sans-serif; scroll-behavior: smooth; color:#333;}
-  a {text-decoration:none; color:#0077cc;}
-  a:hover {text-decoration:underline;}
+/* Global */
+html, body { margin:0; padding:0; font-family: Arial, sans-serif; scroll-behavior: smooth; color:#333; }
+a { text-decoration:none; color:#0077cc; }
+a:hover { text-decoration:underline; }
 
-  /* Header */
-  header {position:fixed; top:0; left:0; right:0; height:var(--header-height); display:flex; justify-content:space-between; align-items:center; padding:0 40px; box-sizing:border-box; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:1000;}
-  #title {font-family:"Georgia","Times New Roman",serif; font-size:28px; font-weight:bold; color:#333;}
-  .nav-links {display:flex; gap:30px;}
-  .nav-links a {font-weight:600; font-size:16px;}
-  .nav-links a:hover {color:#005fa3;}
-  .hamburger {display:none; flex-direction: column; justify-content: space-between; width:25px; height:20px; cursor:pointer;}
-  .hamburger span {display:block; height:3px; width:100%; background:#333; border-radius:2px; transition: all 0.3s ease;}
-  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
-  .hamburger.open span:nth-child(2){opacity:0;}
-  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+/* Header */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+  background: #fff;
+  border-bottom: 1.5px solid rgba(0,0,0,0.15); /* like old header */
+  z-index: 1000;
+}
 
-  /* Hero / Slideshow */
-  .slideshow-container {position:relative; margin-top:var(--header-height); width:100%; height:450px; overflow:hidden;}
-  .slide {display:none; width:100%; height:100%;}
-  .slide img {width:100%; height:100%; object-fit:cover;}
-  .hero-text {position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#fff; text-align:center; background:rgba(0,0,0,0.3); padding:20px; border-radius:8px;}
-  .hero-text h1 {font-size:2.5rem; margin-bottom:10px;}
-  .hero-text p {font-size:1.2rem; margin-bottom:15px;}
-  .hero-text a {padding:10px 20px; background:#0077cc; color:#fff; border-radius:6px; font-weight:bold;}
-  .hero-text a:hover {background:#005fa3;}
+#title {
+  font-family: "Georgia","Times New Roman",serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  user-select: none;
+}
 
-  /* Sections */
-  section {padding:80px 20px; max-width:1000px; margin:0 auto;}
-  .section-title {font-size:2rem; margin-bottom:30px; text-align:center; color:#222;}
-  .features {display:flex; flex-wrap:wrap; gap:20px; justify-content:center;}
-  .feature-card {flex:1 1 220px; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align:center;}
-  .feature-card i {font-size:2rem; color:#0077cc; margin-bottom:10px;}
-  .feature-card h3 {margin-bottom:10px;}
-  .feature-card p {font-size:0.95rem; line-height:1.4;}
+/* Nav links (desktop) */
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
 
-  /* How it works */
-  .steps {display:flex; flex-wrap:wrap; gap:20px; justify-content:center;}
-  .step {flex:1 1 200px; text-align:center;}
-  .step i {font-size:2rem; color:#0077cc; margin-bottom:10px;}
-  .step h4 {margin-bottom:10px;}
-  .step p {font-size:0.95rem;}
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  font-weight: 500;
+}
 
-  /* Testimonials */
-  .testimonial {background:#f0f4f8; padding:30px; border-radius:10px; margin:20px 0; text-align:center;}
-  .testimonial img {width:60px; height:60px; border-radius:50%; object-fit:cover; margin-bottom:10px;}
-  .testimonial p {font-style:italic;}
+.nav-links a:hover {
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
-  /* CTA */
-  .cta {text-align:center;}
-  .cta a {padding:12px 25px; background:#0077cc; color:#fff; border-radius:6px; font-weight:bold;}
-  .cta a:hover {background:#005fa3;}
+/* Hamburger button */
+.hamburger {
+  display: none; /* shown only on mobile */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1100;
+}
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .features, .steps {flex-direction:column;}
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger X animation */
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+/* --- Mobile Styles --- */
+@media (max-width: 420px) {
+  header { padding: 0 16px; }
+  #title { font-size: 24px; }
+
+  .hamburger { display: flex; }
+
+  /* Mobile menu - hidden by default */
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--header-height);
+    right: 0;
+    left: 0;
+    max-height: 0;       /* collapsed */
+    overflow: hidden;
+    background: #fff;
+    transition: max-height 0.3s ease;
+    padding: 8px 16px;
+    gap: 8px;
+    align-items: flex-end; /* right-align links */
+    box-sizing: border-box;
+    z-index: 999;
   }
 
-  /* Mobile - hide nav links completely and show hamburger */
-  @media (max-width: 420px) {
-    header {padding:0 16px;}
-    #title {font-size:24px;}
-    .hamburger {display:flex;}
+  /* Mobile menu - expanded */
+  .nav-links.open {
+    max-height: 200px;   /* enough to show all links */
+  }
 
-    /* hide menu completely */
-    .nav-links {
-      display: none;               /* removed from layout when closed */
-    }
+  /* Mobile link style */
+  .nav-links a {
+    font-size: 18px;
+    padding: 4px 0;
+    font-weight: 500;
+    color: #333;
+  }
+}
 
-    /* when open, show as vertical column */
-    .nav-links.open {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: var(--header-height);
-      right: 0;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      padding: 10px 16px;
-      gap: 15px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      z-index: 999;
-    }
   }
 </style>
 </head>
@@ -221,26 +250,28 @@
   showSlides();
 
   // Hamburger accessible toggle
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.querySelector('.nav-links');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
 
-  hamburger.addEventListener('click', () => {
-    const isOpen = navLinks.classList.toggle('open');
-    hamburger.classList.toggle('open');
-    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+});
 
-  // Optional: close mobile menu when a link is clicked (better UX)
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      if (navLinks.classList.contains('open')) {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
-    });
+// Close menu when a link is clicked (optional, recommended)
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
   });
+});
+
 </script>
 
 </body>
 </html>
+
