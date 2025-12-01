@@ -64,52 +64,33 @@
   .cta a {padding:12px 25px; background:#0077cc; color:#fff; border-radius:6px; font-weight:bold;}
   .cta a:hover {background:#005fa3;}
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .features, .steps {flex-direction:column;}
-  }
-
-  /* Mobile - hide nav links completely and show hamburger */
-  @media (max-width: 420px) {
-    header {padding:0 16px;}
-    #title {font-size:24px;}
-    .hamburger {display:flex;}
-
-    /* hide menu completely */
-    .nav-links {
-      display: none;               /* removed from layout when closed */
-    }
-
-    /* when open, show as vertical column */
-    .nav-links.open {
-      display: flex;
+   /* Hamburger */
+    .hamburger {
+      display:none;
       flex-direction: column;
-      position: absolute;
-      top: var(--header-height);
-      right: 0;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      padding: 10px 16px;
-      gap: 15px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      z-index: 999;
+      justify-content: space-between;
+      width: 25px;
+      height: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1100;
     }
-  }
-</style>
-</head>
-<body>
 
-<header>
-  <a id="title" href="index.html">NippuKoodi</a>
-  <nav class="nav-links" aria-label="Main navigation">
-    <a href="#about">About</a>
-    <a href="#features">Services</a>
-    <a href="#how">How It Works</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-</header>
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: #333;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Hamburger X animation */
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+  
+
 
 <!-- Hero / Slideshow -->
 <div class="slideshow-container">
@@ -244,3 +225,4 @@
 
 </body>
 </html>
+
