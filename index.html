@@ -61,9 +61,34 @@
   .cta a:hover {background:#005fa3;}
 
   /* Responsive */
-  @media(max-width:768px){.features,.steps{flex-direction:column;}}
-  @media(max-width:420px){header{padding:0 16px;} #title{font-size:24px;} .hamburger{display:flex;} .nav-links{flex-direction:column; position:absolute; top:70px; right:0; left:0; width:100%; background:#fff; overflow:hidden; max-height:0; padding:10px; gap:15px;} .nav-links.open{max-height:300px;}}
-</style>
+@media(max-width:420px){
+  header{padding:0 16px;}
+  #title{font-size:24px;}
+  .hamburger{display:flex;}
+
+  /* CLOSED MENU */
+  .nav-links{
+    flex-direction:column;
+    position:absolute;
+    top:70px;
+    right:0;
+    left:0;
+    width:100%;
+    background:#fff;
+    overflow:hidden;
+    max-height:0;
+    gap:15px;
+    padding:0; /* ✅ remove padding when closed */
+    transition:max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  /* OPEN MENU */
+  .nav-links.open{
+    max-height:300px;
+    padding:10px; /* ✅ add padding ONLY when open */
+  }
+}
+
 </head>
 <body>
 
@@ -195,3 +220,4 @@
 
 </body>
 </html>
+
