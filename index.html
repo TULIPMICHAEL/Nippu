@@ -7,13 +7,17 @@
 <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
+  /* header height variable for scroll-padding */
+  :root { --header-height: 70px; }
+  html { scroll-padding-top: var(--header-height); }
+
   /* Global */
   html, body {margin:0; padding:0; font-family: Arial, sans-serif; scroll-behavior: smooth; color:#333;}
   a {text-decoration:none; color:#0077cc;}
   a:hover {text-decoration:underline;}
 
   /* Header */
-  header {position:fixed; top:0; left:0; right:0; height:70px; display:flex; justify-content:space-between; align-items:center; padding:0 40px; box-sizing:border-box; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:1000;}
+  header {position:fixed; top:0; left:0; right:0; height:var(--header-height); display:flex; justify-content:space-between; align-items:center; padding:0 40px; box-sizing:border-box; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:1000;}
   #title {font-family:"Georgia","Times New Roman",serif; font-size:28px; font-weight:bold; color:#333;}
   .nav-links {display:flex; gap:30px;}
   .nav-links a {font-weight:600; font-size:16px;}
@@ -25,7 +29,7 @@
   .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
 
   /* Hero / Slideshow */
-  .slideshow-container {position:relative; margin-top:70px; width:100%; height:450px; overflow:hidden;}
+  .slideshow-container {position:relative; margin-top:var(--header-height); width:100%; height:450px; overflow:hidden;}
   .slide {display:none; width:100%; height:100%;}
   .slide img {width:100%; height:100%; object-fit:cover;}
   .hero-text {position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#fff; text-align:center; background:rgba(0,0,0,0.3); padding:20px; border-radius:8px;}
@@ -61,46 +65,50 @@
   .cta a:hover {background:#005fa3;}
 
   /* Responsive */
-@media(max-width:420px){
-  header{padding:0 16px;}
-  #title{font-size:24px;}
-  .hamburger{display:flex;}
-
-  /* CLOSED MENU */
-  .nav-links{
-    flex-direction:column;
-    position:absolute;
-    top:70px;
-    right:0;
-    left:0;
-    width:100%;
-    background:#fff;
-    overflow:hidden;
-    max-height:0;
-    gap:15px;
-    padding:0; /* ✅ remove padding when closed */
-    transition:max-height 0.3s ease, padding 0.3s ease;
+  @media (max-width: 768px) {
+    .features, .steps {flex-direction:column;}
   }
 
-  /* OPEN MENU */
-  .nav-links.open{
-    max-height:300px;
-    padding:10px; /* ✅ add padding ONLY when open */
-  }
-}
+  /* Mobile - hide nav links completely and show hamburger */
+  @media (max-width: 420px) {
+    header {padding:0 16px;}
+    #title {font-size:24px;}
+    .hamburger {display:flex;}
 
+    /* hide menu completely */
+    .nav-links {
+      display: none;               /* removed from layout when closed */
+    }
+
+    /* when open, show as vertical column */
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: var(--header-height);
+      right: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      padding: 10px 16px;
+      gap: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      z-index: 999;
+    }
+  }
+</style>
 </head>
 <body>
 
 <header>
   <a id="title" href="index.html">NippuKoodi</a>
-  <div class="nav-links">
+  <nav class="nav-links" aria-label="Main navigation">
     <a href="#about">About</a>
     <a href="#features">Services</a>
     <a href="#how">How It Works</a>
     <a href="#contact">Contact</a>
-  </div>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </header>
 
 <!-- Hero / Slideshow -->
@@ -201,23 +209,38 @@
 
 <script>
   // Slideshow
-  let slideIndex=0;
-  function showSlides(){
-    const slides=document.getElementsByClassName('slide');
-    for(let i=0;i<slides.length;i++) slides[i].style.display='none';
+  let slideIndex = 0;
+  function showSlides() {
+    const slides = document.getElementsByClassName('slide');
+    for (let i = 0; i < slides.length; i++) slides[i].style.display = 'none';
     slideIndex++;
-    if(slideIndex>slides.length) slideIndex=1;
-    slides[slideIndex-1].style.display='block';
-    setTimeout(showSlides,4000);
+    if (slideIndex > slides.length) slideIndex = 1;
+    slides[slideIndex - 1].style.display = 'block';
+    setTimeout(showSlides, 4000);
   }
   showSlides();
 
-  // Hamburger
-  const hamburger=document.getElementById('hamburger');
-  const navLinks=document.querySelector('.nav-links');
-  hamburger.addEventListener('click',()=>{navLinks.classList.toggle('open'); hamburger.classList.toggle('open');});
+  // Hamburger accessible toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Optional: close mobile menu when a link is clicked (better UX)
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 </script>
 
 </body>
 </html>
-
